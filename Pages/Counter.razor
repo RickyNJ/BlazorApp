@@ -1,0 +1,99 @@
+﻿@page "/counter"
+
+@using ChartJs.Blazor.ChartJS.BarChart
+@using ChartJs.Blazor.ChartJS.BarChart.Axes
+@using ChartJs.Blazor.ChartJS.Common.Axes
+@using ChartJs.Blazor.Charts
+@using ChartJs.Blazor.ChartJS.PieChart
+@using ChartJs.Blazor.ChartJS.Common.Properties
+@using ChartJs.Blazor.ChartJS.Common.Wrappers
+@using ChartJs.Blazor.Util
+@using BlazorApp.Data
+@using System.Drawing
+
+<ChartJs.Blazor.Charts.ChartJsBarChart Config="_configCAIChart" @ref="_chartCAI"></ChartJs.Blazor.Charts.ChartJsBarChart>
+
+@code{
+
+    private List<BAIResults> results;
+    private BarConfig _configCAIChart;
+    private ChartJsBarChart _chartCAI;
+    BAIResults result = new BAIResults();
+    List<BAIResults> resultlist = new List<BAIResults>();
+
+    private void GetBAIResults()
+    {
+        resultlist = result.GetBAIResults();
+    }
+
+    protected override void OnInitialized()
+    {
+
+        _configCAIChart = new BarConfig()
+        {
+            Options = new BarOptions
+            {
+                Responsive = true,
+                Title = new OptionsTitle
+                {
+                    Display = true,
+                    Text = "Barchart"
+                },
+                Scales = new BarScales
+                {
+                    YAxes = new List<CartesianAxis>
+                {
+                        new BarLinearCartesianAxis
+                        {
+                            Ticks = new ChartJs.Blazor.ChartJS.Common.Axes.Ticks.LinearCartesianTicks
+                            {
+                                SuggestedMin = 0,
+
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        var barSet = new BarDataset<DoubleWrapper>
+        {
+            Label = "Barset1",
+            BackgroundColor = ColorUtil.RandomColorString(),
+            BorderWidth = 1,
+
+            HoverBorderColor = ColorUtil.RandomColorString(),
+            HoverBorderWidth = 1,
+            BorderColor = "#ffffff",
+        };
+
+        var barSet2 = new BarDataset<DoubleWrapper>
+        {
+            Label = "Barset2",
+            BackgroundColor = ColorUtil.RandomColorString(),
+            BorderWidth = 1,
+
+            HoverBorderColor = ColorUtil.RandomColorString(),
+            HoverBorderWidth = 1,
+            BorderColor = "#ffffff",
+        };
+
+
+
+        barSet.Add(1.2);
+        barSet.Add(1.6);
+        barSet.Add(1.9);
+        barSet.Add(0.5);
+        barSet2.Add(1.7);
+        barSet2.Add(1.0);
+        barSet2.Add(0.9);
+        barSet2.Add(0.2);
+
+        _configCAIChart.Data.Labels.Add("BAI1");
+        _configCAIChart.Data.Labels.Add("BAI2");
+        _configCAIChart.Data.Labels.Add("CAI1");
+        _configCAIChart.Data.Labels.Add("CAI2");
+        _configCAIChart.Data.Datasets.Add(barSet);
+        _configCAIChart.Data.Datasets.Add(barSet2);
+    }
+}

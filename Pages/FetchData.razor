@@ -1,0 +1,70 @@
+﻿@page "/fetchdata"
+
+@using BlazorApp.Data
+
+
+<h1>Weather forecast</h1>
+<p>
+    @currentValue
+    <br />  
+    @foreach(int x in results)
+    {
+        @x
+    }
+    <br />
+    @foreach(string x in currentTypes)
+    {
+        <input type="radio" id="@x" name="types" value="@x"/>
+        <label for="@x">@x</label><br />
+    }
+    <input type="submit" />
+</p>
+
+
+@code {
+
+    private string currentValue;
+    private List<string> currentClasses;
+    private List<string> currentTypes;
+    private List<int> results;
+
+    private int id = 2;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Instance All = new Instance();
+
+        var allInstances = All.GetInstances();
+
+
+        foreach (Instance x in allInstances)
+        {
+            if(x.assessmentId == id)
+            {
+                currentValue = x.Date.ToString();
+                var resultList = x.GetResults();
+
+                results = new List<int>();
+
+                foreach (BAIResults y in resultList)
+                {
+                    results.Add(y.BAIScore);
+                }
+            }
+
+
+
+        }
+
+        Classes classes = new Classes();
+        currentClasses = classes.GetClasses();
+
+        Types types = new Types();
+        currentTypes = types.GetTypes();
+    }
+
+    public void UpdateFilters()
+    {
+
+    }
+}
